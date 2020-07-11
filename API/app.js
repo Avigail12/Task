@@ -35,12 +35,13 @@ app.use(bodyParser.json());
 //Import route
 const taskRoute = require('./routes/tasks');
 const userRoute = require('./routes/users');
-
+const authRoute = require('./routes/auth');
 
 
 //Midleware
 app.use('/api/users', userRoute);
 app.use('/api/tasks', taskRoute);
+app.use('/api/auth', authRoute);
 //app.use('/user', userRoute);
 
 //Routes

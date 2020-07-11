@@ -2,8 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 var fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
 
-const sql = require('mssql');
+// const sql = require('mssql');
 const User = require('../models/User');
 const { json } = require('body-parser');
 
@@ -16,20 +17,65 @@ const { json } = require('body-parser');
 // };
 
 
-router.get('/', async (req, res, next) => {
-  //  res.render('test', {output: 'req.body.'});
+///עבודה עם קבצים
 
-  var content = fs.readFileSync('user.txt','utf8');
-    res.send(content);
+// router.get('/', async (req, res, next) => {
+//   //  res.render('test', {output: 'req.body.'});
+
+//   var content = fs.readFileSync('user.txt','utf8');
+//     res.send(content);
+// });
+
+// router.post('/', async (req, res) => {
+//     fs.appendFile('user.txt', req.body, function (err) {
+//     if (err) throw err;
+//     console.log('Updated!');
+//   });
+//   //res.send(fs.readFile());
+// });
+
+/// עבודה עם sqlite
+db = new sqlite3.Database('./task.db', (err) => {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log('Connected to the task.db SQlite database.');
+});
+
+let sql = `SELECT * FROM users`;
+var users = [];
+
+db.all(sql, [] , (err, row) => {
+
+if (err) {
+  throw err;
+}
+// console.log(row);
+router.get('/', async (req, res) => {
+  await res.send(row);
+});
+
 });
 
 router.post('/', async (req, res) => {
-    fs.appendFile('user.txt', req.body, function (err) {
-    if (err) throw err;
-    console.log('Updated!');
+  
+  await db.run("INSERT INTO users(username,password) VALUES('"+req.body.username+"','"+req.body.password+"')", function(err) {
+    if (err) {
+      return console.log(err.message);
+    }
+    // get the last insert id
+    console.log(`A row has been inserted with rowid ${this.lastID}`);
   });
-  //res.send(fs.readFile());
 });
+
+// db.close((err) => {
+// if (err) {
+//   return console.error(err.message);
+// }
+// console.log('Close the database connection.');
+// });
+
+
 // const executeQuery = function (res, query) {
 //     sql.connect(dbConfig, function (err) {
 //         if (err) {{"avigail":"cohen"},{"shani":"levi"},{"clary":"fry"}

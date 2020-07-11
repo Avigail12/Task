@@ -1,3 +1,4 @@
 {"avigail":"cohen"},
 {"shani":"levi"},
-{"clary":"fry"}{"username":"sss","fullname":"sss"}
+{"clary":"fry"},
+{"username":"sss","fullname":"sss"}
