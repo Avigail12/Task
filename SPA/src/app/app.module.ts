@@ -11,6 +11,7 @@ import { appRoutes } from './routes';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './_services/auth.service';
 import { HomeRegisterComponent } from './home-register/home-register.component';
+import { TaskService } from './_services/task.service';
 
 @NgModule({
    declarations: [
@@ -28,7 +29,8 @@ import { HomeRegisterComponent } from './home-register/home-register.component';
       //BsDropdownModule.forRoot()
    ],
    providers: [
-      AuthService
+      AuthService,
+      TaskService
    ],
    bootstrap: [
       AppComponent

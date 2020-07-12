@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 var fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
+var cors = require('cors');
 var users = [];
 
 // router.get('/', async (req, res, next) => {
@@ -10,6 +11,11 @@ var users = [];
 //     console.log(content);
 //       res.send(content);
 //   });
+
+// var corsOptions = {
+//   origin: 'http://localhost:5000/api/auth.com',
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
 
 db = new sqlite3.Database('./task.db', (err) => {
   if (err) {
@@ -31,18 +37,10 @@ db.all(sql, [] , (err, row) => {
   users = row;
   // console.log(users);
 });
-router.post('/login', async (req, res) => {
+router.post('/login', cors() ,async (req, res) => {
 
-  // request(
-  //   { url: 'http://localhost:5000/api/auth/login' },
-  //   (error, response, body) => {
-  //     if (error || response.statusCode !== 200) {
-  //       return res.status(500).json({ type: 'error', message: err.message });
-  //     }
-     console.log(users);
       res.send(users.find(u => u.username == req.body.username && u.password == req.body.password));
-  //   }
-  // )
+
 });
 
 router.post('/register', async (req, res) => {

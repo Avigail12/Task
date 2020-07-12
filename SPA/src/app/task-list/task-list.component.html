@@ -1,3 +1,5 @@
-<p>
-  task-list works!
+<p *ngFor="let task of tasks">
+  {{task.name}},
+  {{task.description}},
+  {{task.dueDate}}
 </p>
