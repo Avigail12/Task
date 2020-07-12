@@ -57,16 +57,7 @@ router.get('/', async (req, res) => {
 
 });
 
-router.post('/', async (req, res) => {
-  
-  await db.run("INSERT INTO users(username,password) VALUES('"+req.body.username+"','"+req.body.password+"')", function(err) {
-    if (err) {
-      return console.log(err.message);
-    }
-    // get the last insert id
-    console.log(`A row has been inserted with rowid ${this.lastID}`);
-  });
-});
+
 
 // db.close((err) => {
 // if (err) {

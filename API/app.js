@@ -6,30 +6,11 @@ const bodyParser = require('body-parser');
 require('dotenv/config');
 // var sql = require("mssql");
 
-// var config = {
-//     user: 'appuser',
-//     password: 'password',
-//     server: 'LAPTOP-5P3CE9K1\SQLEXPRESS', 
-//     database: 'task',
-//     port: 1433 
-// };
-
-// var connection = new sql.ConnectionPool(config);
-
-// connection.connect(function(err){
-//     if(err) throw err;
-//     var request = new sql.Request(connection);
-           
-//         // query to the database and get the records
-//         request.query('select * from Student', function (err, recordset) {
-            
-//             if (err) console.log(err)
-
-//             // send records as a response
-//             res.send(recordset);
-            
-//         });
-// });
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  });
+  
 // // make a request valid
 app.use(bodyParser.json());
 //Import route
@@ -60,3 +41,29 @@ app.get('/', (req, res) => {
 var server = app.listen(5000, function () {
     console.log('Server is running..');
 });
+
+
+// var config = {
+//     user: 'appuser',
+//     password: 'password',
+//     server: 'LAPTOP-5P3CE9K1\SQLEXPRESS', 
+//     database: 'task',
+//     port: 1433 
+// };
+
+// var connection = new sql.ConnectionPool(config);
+
+// connection.connect(function(err){
+//     if(err) throw err;
+//     var request = new sql.Request(connection);
+           
+//         // query to the database and get the records
+//         request.query('select * from Student', function (err, recordset) {
+            
+//             if (err) console.log(err)
+
+//             // send records as a response
+//             res.send(recordset);
+            
+//         });
+// });

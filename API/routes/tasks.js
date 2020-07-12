@@ -34,7 +34,8 @@ const sqlite = require('../connection');
 
 const sqlite3 = require('sqlite3').verbose();
 var tasks=[];
-
+ //tasksById = new Task();
+ var tasksById = [];
 
 db = new sqlite3.Database('./task.db', (err) => {
     if (err) {
@@ -50,9 +51,15 @@ db.all(sql, [] , (err, row) => {
   if (err) {
     throw err;
   }
-  // console.log(row);
+  tasks = row;
   router.get('/', async (req, res) => {
     await res.send(row);
+  });
+
+  router.get('/:id', async (req, res) => {
+    
+    var tasksById = tasks.find(t => t.userid == req.params.id);
+    res.send(tasksById);
   });
 
 
