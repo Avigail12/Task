@@ -7,6 +7,7 @@ const sqlite3 = require('sqlite3').verbose();
 // const sql = require('mssql');
 const User = require('../models/User');
 const { json } = require('body-parser');
+const sqlite = require('../connection');
 
 // const config = {
 //     user: 'appuser',
@@ -35,12 +36,14 @@ const { json } = require('body-parser');
 // });
 
 /// עבודה עם sqlite
-db = new sqlite3.Database('./task.db', (err) => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log('Connected to the task.db SQlite database.');
-});
+// db = new sqlite3.Database('./task.db', (err) => {
+//   if (err) {
+//     return console.error(err.message);
+//   }
+//   console.log('Connected to the task.db SQlite database.');
+// });
+
+db = sqlite.db;
 
 let sql = `SELECT * FROM users`;
 var users = [];

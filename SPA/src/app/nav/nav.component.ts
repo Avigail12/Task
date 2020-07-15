@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
+import { TaskService } from '../_services/task.service';
 
 @Component({
   selector: 'app-nav',
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
   model: any = {};
   logg = false;
-  constructor(public authService: AuthService, private router: Router) { }
+  tasks: any;
+  constructor(public authService: AuthService, private router: Router,private taskServices: TaskService) { }
 
   ngOnInit() {
   }
@@ -18,9 +20,11 @@ export class NavComponent implements OnInit {
   login(){
     this.authService.login(this.model).subscribe((x: any) => {
       if ( x != null ){
-        this.logg = true;
-        localStorage.setItem('user', x);
         console.log(x);
+        this.taskServices.getTaskById(this.authService.id).subscribe((tasks: any) => {
+          this.tasks = tasks;
+        });
+        console.log(this.tasks);
       }
     },err => {
       console.log('error');
@@ -29,7 +33,16 @@ export class NavComponent implements OnInit {
   });
   }
   loggedIn(){
-    return this.logg;
+    // if (localStorage.getItem('user') != null){
+    //   this.logg = true;
+    //   return this.logg;
+    // }
+    // else {
+    //   this.logg = false;
+    //   return this.logg;
+    // }
+
+    return localStorage.getItem('user') != null;
   }
   logout(){
 

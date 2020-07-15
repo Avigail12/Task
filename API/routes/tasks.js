@@ -37,12 +37,14 @@ var tasks=[];
  //tasksById = new Task();
  var tasksById = [];
 
-db = new sqlite3.Database('./task.db', (err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Connected to the task.db SQlite database.');
-  });
+// db = new sqlite3.Database('./task.db', (err) => {
+//     if (err) {
+//       return console.error(err.message);
+//     }
+//     console.log('Connected to the task.db SQlite database.');
+//   });
+
+db = sqlite.db;
 
 let sql = `SELECT * FROM tasks`;
 
@@ -55,13 +57,19 @@ db.all(sql, [] , (err, row) => {
   router.get('/', async (req, res) => {
     await res.send(row);
   });
-
-  router.get('/:id', async (req, res) => {
+ /// get tasks of usere
+  router.get('/users/:id', async (req, res) => {
     
     var tasksById = tasks.find(t => t.userid == req.params.id);
     res.send(tasksById);
   });
 
+  router.get('/:id', async (req, res) => {
+    
+    var tasksById = tasks.find(t => t.id == req.params.id);
+    // console.log(tasksById);
+    res.send(tasksById);
+  });
 
 });
 
@@ -71,7 +79,7 @@ router.post('/', async (req, res) => {
     if (err) {
       return console.log(err.message);
     }
-    // get the last insert id
+    res.send(req.body);
     console.log(`A row has been inserted with rowid ${this.lastID}`);
   });
 });
@@ -87,21 +95,39 @@ await db.run(sqlPut, function(err) {
   console.log(`Row(s) updated: ${this.changes}`);
 
 });
+await sqlite.db.close();
+await res.end( "updated customer");
+
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
 
- await db.run("DELETE FROM tasks WHERE rowid='"+req.body.id+"'", function(err) {
+ await db.run("DELETE FROM tasks WHERE rowid='"+req.params.id+"'", function(err) {
     if (err) {
       return console.error(err.message);
     }
+    // 
     console.log(`Row(s) deleted ${this.changes}`);
   });
+
+  await res.end( "Deleted customer");
+  await sqlite.db.close();
 });
 
 
+// const { exec } = require("child_process");
 
-
+// exec("ls -la", (error, stdout, stderr) => {
+//     if (error) {
+//         console.log(`error: ${error.message}`);
+//         return;
+//     }
+//     if (stderr) {
+//         console.log(`stderr: ${stderr}`);
+//         return;
+//     }
+//     console.log(`stdout: ${stdout}`);
+// });
 
 // db.close((err) => {
 //   if (err) {

@@ -4,6 +4,8 @@ var fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 var cors = require('cors');
 var users = [];
+const sqlite = require('../connection');
+
 
 // router.get('/', async (req, res, next) => {
 
@@ -17,12 +19,14 @@ var users = [];
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
 
-db = new sqlite3.Database('./task.db', (err) => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log('Connected to the task.db SQlite database.');
-});
+// db = new sqlite3.Database('./task.db', (err) => {
+//   if (err) {
+//     return console.error(err.message);
+//   }
+//   console.log('Connected to the task.db SQlite database.');
+// });
+
+db = sqlite.db;
 
 let sql = `SELECT * FROM users`;
 
